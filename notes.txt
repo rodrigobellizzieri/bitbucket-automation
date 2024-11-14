@@ -1,0 +1,17 @@
+Idea:
+
+- Create an automation to create a repository in Bitbucket, set same environments and variables, after this, add one template to this repository and change to private repository.
+
+Tasks:
+
+- Select Project
+- Select template
+- Set repository name
+- Create repository
+- Select private repository or public
+- Create variables using Json file 
+- Create branch develop
+- Add template
+- Set Branch develop as principal
+
+- Finish and show URL to new repository

@@ -1,0 +1,39 @@
+{
+    "variables": {
+        "environment": {
+            "enabled": true,
+            "values": [
+                {
+                    "dev": {
+                        "AWS_REGION": "us-east-1",
+                        "INSTANCE_TYPE": "SPOT"
+                    }
+                },
+                {
+                    "hmg": {
+                        "AWS_REGION": "us-east-1",
+                        "INSTANCE_TYPE": "SPOT"
+                    }
+                },
+                {
+                    "prd": {
+                        "AWS_REGION": "sa-east-1",
+                        "INSTANCE_TYPE": "ON-DEMAND"
+                    }
+                }
+            ]
+        },
+        "repository": {
+            "enabled": true,
+            "values": [
+                {
+                    "MEMORY_MIN": "128Mi",
+                    "MEMORY_MAX": "256Mi",
+                    "CPU_MIN": "0.5m",
+                    "CPU_MAX": "1m"
+                }
+            ]
+        }
+    }
+}
+  
