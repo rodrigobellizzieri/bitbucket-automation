@@ -1,0 +1,25 @@
+# bitbucket-pipelines.yml
+image: golang:1.20
+
+pipelines:
+  default:
+    - step:
+        name: Build and Test
+        caches:
+          - go
+        script:
+          - echo "Instalando dependências..."
+          - go mod download
+          - echo "Executando testes..."
+          - go test ./... -v
+          - echo "Compilando binário..."
+          - go build -o app ./main.go
+        artifacts:
+          - app
+  branches:
+    main:
+      - step:
+          name: Deploy
+          script:
+            - echo "Fazendo deploy do GoLang App!"
+            # Adicione comandos de deploy aqui

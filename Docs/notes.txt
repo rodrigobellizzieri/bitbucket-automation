@@ -4,10 +4,10 @@ Idea:
 
 Tasks:
 
-- Select Project
-- Select template
-- Set repository name
-- Create repository
+- Select Project ✅
+- Set repository name ✅
+- Create repository ✅
+- Select template ✅
 - Select private repository or public
 - Create variables using Json file 
 - Create branch develop
@@ -15,3 +15,7 @@ Tasks:
 - Set Branch develop as principal
 
 - Finish and show URL to new repository
+
+Fix to do
+Enable/Disable Public Repository ✅
+Public Repository get template

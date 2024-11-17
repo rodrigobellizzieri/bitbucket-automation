@@ -1,0 +1,30 @@
+# bitbucket-pipelines.yml
+image: node:18
+
+pipelines:
+  default:
+    - step:
+        name: Install and Build
+        caches:
+          - node
+        script:
+          - echo "Instalando dependências..."
+          - npm install
+          - echo "Executando build..."
+          - npm run build
+        artifacts:
+          - dist/**  # Diretório de build gerado pelo TypeScript
+    - step:
+        name: Run Tests
+        caches:
+          - node
+        script:
+          - echo "Executando testes..."
+          - npm test
+  branches:
+    main:
+      - step:
+          name: Deploy
+          script:
+            - echo "Fazendo deploy do TypeScript App!"
+            # Adicione comandos de deploy aqui
