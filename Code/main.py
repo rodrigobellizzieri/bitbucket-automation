@@ -46,8 +46,6 @@ project = project.upper()
 private = private.lower()
 url = f"https://api.bitbucket.org/2.0/repositories/{workspace}/{repository}"
 
-print(private)
-
 
 # Get token
 def getToken():
@@ -68,7 +66,6 @@ def getToken():
 # Set token
 token = getToken()
 
-print(f"External repository: {repository}")
 # Create Repository
 def createRepository(repository):
 
@@ -77,16 +74,7 @@ def createRepository(repository):
     "Content-Type": "application/json",
     "Authorization": f"Bearer {token}"
     }
-    
-    # payload = json.dumps( {
-    # "is_private": True,
-    # "project": {
-    #     "key": f"{project}"
-    # },
-    # } ) 
 
-    # print(repository)
-    # payload = ""
     if private == "public":
         payload = json.dumps( {
             "is_private": False,
@@ -113,7 +101,6 @@ def createRepository(repository):
 
     if response.status_code == 200:
         print("Created Successfully ✅")
-        print(f"Repository URL: {url}")
     else:
         print(f"Unfortanetally we can't create this repository ❌")
         print(f"Status Code: {response.status_code}")
@@ -128,6 +115,7 @@ def cloneRepository():
     repo_url = f"https://{bb_user}:{app_pass}@bitbucket.org/{workspace}/{repository}.git"
     subprocess.run(["git", "clone", repo_url])
 
+
 def setTemplate():
     current_path = os.getcwd()
     template_path = os.path.join(current_path, "templates", template)
@@ -135,6 +123,7 @@ def setTemplate():
 
     # Copy template
     shutil.copytree(template_path, repo_path, dirs_exist_ok=True)
+
 
 def pushTemplate():
     repo_path = os.path.join(os.getcwd(), repository)
@@ -144,8 +133,14 @@ def pushTemplate():
     subprocess.run(["git", "-C", repo_path, "commit", "-m", f"Add template {template}"])
     subprocess.run(["git", "-C", repo_path, "push"])
 
-print(f"Repository URL: {url}")
+
+# Start functions
 createRepository(repository)
 cloneRepository()
 setTemplate()
 pushTemplate()
+
+print(85 * "=")
+print(f"Made with many coffee by Rodrigo Bellizzieri")
+print(f'Repository URL: https://bitbucket.org/{workspace}/{repository}/')
+print(85 * "=")
