@@ -24,6 +24,6 @@ jobs:
           file: ./Code/Dockerfile
           push: true
           tags: |
-            rodrigobellizzieri:bitbucket-automation:latest
-            rodrigobellizzieri:bitbucket-automation:v0.0.2
+            rodrigobellizzieri/bitbucket-automation:latest
+            rodrigobellizzieri/bitbucket-automation:v0.0.2
             
