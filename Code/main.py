@@ -87,7 +87,7 @@ def createRepository(repository):
                 "key": f"{project}"
             },
             "mainbranch": {
-                "type": f"{main_branche}"
+                "name": f"{main_branche}"
             },
             } ) 
     elif private == "private":
@@ -97,7 +97,7 @@ def createRepository(repository):
                 "key": f"{project}"
             },
             "mainbranch": {
-                "type": f"{main_branche}"
+                "name": f"{main_branche}"
             },
             } )
     else:
@@ -149,7 +149,7 @@ def pushTemplate():
     subprocess.run(["git", "-C", repo_path, "checkout", "-b", f"{dev_branche}"])
     subprocess.run(["git", "-C", repo_path, "add", "."])
     subprocess.run(["git", "-C", repo_path, "commit", "-m", f"Add branche {dev_branche}"])
-    subprocess.run(["git", "-C", repo_path, "push"])
+    subprocess.run(["git", "-C", repo_path, "push", "--set-upstream", "origin", f"{dev_branche}"])
 
 
 # Start functions
