@@ -86,9 +86,7 @@ def createRepository(repository):
             "project": {
                 "key": f"{project}"
             },
-            "mainbranch": {
-                "name": f"{main_branche}"
-            },
+            "mainbranch": {"name": f"{str(main_branche)}"}
             } ) 
     elif private == "private":
         payload = json.dumps( {
@@ -96,9 +94,7 @@ def createRepository(repository):
             "project": {
                 "key": f"{project}"
             },
-            "mainbranch": {
-                "name": f"{main_branche}"
-            },
+            "mainbranch": {"name": f"{str(main_branche)}"}
             } )
     else:
         print("Error: This value is not allowed")
