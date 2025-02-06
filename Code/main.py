@@ -10,6 +10,8 @@ project = os.getenv("PROJECT") # From pipeline
 repository = os.getenv("REPOSITORY") # From pipeline
 template = os.getenv("TEMPLATE") # From pipeline
 private = os.getenv("PRIVATE") # From pipeline
+main_branche = os.getenv("MAIN_BRANCHE") # From pipeline
+dev_branche = os.getenv("DEV_BRANCHE") # From pipeline
 ci_email = os.getenv("CI_EMAIL") # From Workspace
 ci_name = os.getenv("CI_NAME") # From Workspace
 bb_user = os.getenv("BITBUCKET_USER") # From Workspace
@@ -34,7 +36,10 @@ check_vars = {"BITBUCKET_WORKSPACE": workspace,
               "BITBUCKET_PASS": app_pass,
               "OAUTH_KEY": client_id,
               "OAUTH_SECRET": client_secret,
-              "PRIVATE": private}
+              "PRIVATE": private,
+              "MAIN_BRANCHE": main_branche,
+              "DEV_BRANCHE": dev_branche,
+              }
 
 for name, var in check_vars.items():
     if var is None:
@@ -81,12 +86,18 @@ def createRepository(repository):
             "project": {
                 "key": f"{project}"
             },
+            "mainbranch": {
+                "type": f"{main_branche}"
+            },
             } ) 
     elif private == "private":
         payload = json.dumps( {
             "is_private": True,
             "project": {
                 "key": f"{project}"
+            },
+            "mainbranch": {
+                "type": f"{main_branche}"
             },
             } )
     else:
@@ -131,6 +142,13 @@ def pushTemplate():
     subprocess.run(["git", "config", "--global", "user.name", f"{ci_name}"])
     subprocess.run(["git", "-C", repo_path, "add", "."])
     subprocess.run(["git", "-C", repo_path, "commit", "-m", f"Add template {template}"])
+    subprocess.run(["git", "-C", repo_path, "push"])
+    
+    # Create branche dev
+    subprocess.run(["git", "-C", repo_path, "pull"])
+    subprocess.run(["git", "-C", repo_path, "checkout", "-b", f"{dev_branche}"])
+    subprocess.run(["git", "-C", repo_path, "add", "."])
+    subprocess.run(["git", "-C", repo_path, "commit", "-m", f"Add branche {dev_branche}"])
     subprocess.run(["git", "-C", repo_path, "push"])
 
 
