@@ -49,6 +49,8 @@ for name, var in check_vars.items():
 repository = repository.lower()
 project = project.upper()
 private = private.lower()
+main_branche = main_branche.lower()
+dev_branche = dev_branche.lower()
 url = f"https://api.bitbucket.org/2.0/repositories/{workspace}/{repository}"
 
 
@@ -86,7 +88,7 @@ def createRepository(repository):
             "project": {
                 "key": f"{project}"
             },
-            "mainbranch": {"name": main_branche}
+            "mainbranch": {"name": "main"}
             } ) 
     elif private == "private":
         payload = json.dumps( {
@@ -94,7 +96,7 @@ def createRepository(repository):
             "project": {
                 "key": f"{project}"
             },
-            "mainbranch": {"name": main_branche}
+            "mainbranch": {"name": "main"}
             } )
     else:
         print("Error: This value is not allowed")
@@ -106,7 +108,7 @@ def createRepository(repository):
     headers=headers
     )
 
-    if response.status_code == 200:
+    if response.status_code >= 200 and response.status_code <= 201:
         print("Created Successfully ✅")
     else:
         print(f"Unfortanetally we can't create this repository ❌")
@@ -127,7 +129,6 @@ def setTemplate():
     current_path = os.getcwd()
     template_path = os.path.join(current_path, "templates", template)
     repo_path = os.path.join(current_path, repository)
-
     # Copy template
     shutil.copytree(template_path, repo_path, dirs_exist_ok=True)
 
@@ -140,19 +141,128 @@ def pushTemplate():
     subprocess.run(["git", "-C", repo_path, "commit", "-m", f"Add template {template}"])
     subprocess.run(["git", "-C", repo_path, "push"])
     
-    # Create branche dev
-    subprocess.run(["git", "-C", repo_path, "pull"])
-    subprocess.run(["git", "-C", repo_path, "checkout", "-b", f"{dev_branche}"])
-    subprocess.run(["git", "-C", repo_path, "add", "."])
-    subprocess.run(["git", "-C", repo_path, "commit", "-m", f"Add branche {dev_branche}"])
-    subprocess.run(["git", "-C", repo_path, "push", "--set-upstream", "origin", f"{dev_branche}"])
+    # # Create branche dev
+    # subprocess.run(["git", "-C", repo_path, "pull"])
+    # subprocess.run(["git", "-C", repo_path, "checkout", "-b", f"{dev_branche}"])
+    # subprocess.run(["git", "-C", repo_path, "add", "."])
+    # subprocess.run(["git", "-C", repo_path, "commit", "-m", f"Add branche {dev_branche}"])
+    # subprocess.run(["git", "-C", repo_path, "push", "--set-upstream", "origin", f"{dev_branche}"])
 
+    # # Create branche prd
+    # subprocess.run(["git", "-C", repo_path, "pull"])
+    # subprocess.run(["git", "-C", repo_path, "checkout", "-b", f"{main_branche}"])
+    # subprocess.run(["git", "-C", repo_path, "add", "."])
+    # subprocess.run(["git", "-C", repo_path, "commit", "-m", f"Add branche {main_branche}"])
+    # subprocess.run(["git", "-C", repo_path, "push", "--set-upstream", "origin", f"{main_branche}"])
+
+def createBranches(branche):
+    endpoint = str(f"{url}/refs/branches")
+
+    if branche.lower() == "master":
+        print("⚠️  Isn't allowed create a new branche master.")
+        return
+
+    headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {token}"
+    }
+
+    payload = json.dumps( {
+        "name": f"{branche}",
+        "target": {
+            "hash": "master"
+        } 
+        })
+    
+    response = r.request(
+    "POST",
+    endpoint,
+    data=payload,
+    headers=headers
+    )
+
+    if response.status_code >= 200 and response.status_code <= 201:
+        print("Branche created successfully ✅")
+    else:
+        print(f"Unfortanetally we can't create this branche ❌")
+        print(f"Status Code: {response.status_code}")
+        print(response.json())
+        exit(1)
+    
+
+
+def updateBrancheModel():
+    endpoint = str(f"{url}/branching-model/settings")
+
+    headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {token}"
+    }
+
+    payload = json.dumps( 
+        {
+            "development": {"use_mainbranch": False, "name": f"{dev_branche}"},
+            "production": {"enabled": True, "use_mainbranch": False, "name": f"{main_branche}"}
+        }
+    )
+
+    response = r.request(
+        "PUT",
+        endpoint,
+        data=payload,
+        headers=headers
+    )
+
+    if response.status_code >= 200 and response.status_code <= 201:
+        print("Update branche model successfully ✅")
+    else:
+        print(f"Unfortanetally we can't update branche model ❌")
+        print(f"Status Code: {response.status_code}")
+        print(response.json())
+        exit(1)
+
+
+def enablePipeline():
+    endpoint = str(f"{url}/pipelines_config")
+
+    headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {token}"
+    }
+
+    payload = json.dumps( 
+        {
+            "enabled": True,
+        }
+    )
+
+    response = r.request(
+        "PUT",
+        endpoint,
+        data=payload,
+        headers=headers
+    )
+
+    if response.status_code >= 200 and response.status_code <= 201:
+        print("Pipeline Enabled ✅")
+    else:
+        print(f"Unfortanetally we can't enable pipeline ❌")
+        print(f"Status Code: {response.status_code}")
+        print(response.json())
+        exit(1)
 
 # Start functions
 createRepository(repository)
 cloneRepository()
 setTemplate()
 pushTemplate()
+createBranches(main_branche)
+createBranches(dev_branche)
+updateBrancheModel()
+enablePipeline()
 
 print(85 * "=")
 print(f"Made with many coffee by Rodrigo Bellizzieri")

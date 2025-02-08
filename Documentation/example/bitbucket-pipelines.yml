@@ -1,0 +1,50 @@
+pipelines:
+  custom:
+    bitbucket-automation:
+      - variables:
+          - name: PROJECT
+            description: Project key
+            default: DEVOPS
+            allowed-values: # Put all yours project keys 
+             - DEVOPS
+             - CRED
+             - OPS
+             - PUB
+             - REP
+          - name: REPOSITORY
+            description: Repository name [Ex my-repository-ms]
+          - name: PRIVATE
+            description: Select Private or Public
+            default: "Private"
+            allowed-values:
+             - Private
+             - Public
+          - name: TEMPLATE
+            description: Select your repository template
+            default: golang
+            allowed-values: # Put the same name of your templates directory
+             - golang
+             - typescript
+             - terraform
+             - serverlessframework
+          - name: PRD_BRANCHE
+            description: Prd branche [Ex main]
+          - name: DEV_BRANCHE
+            description: Dev branche [Ex develop]
+      - step: 
+          name: "Run Create Repository"
+          script:
+            - pipe: docker://rodrigobellizzieri/bitbucket-automation:v1.0.0
+              variables:
+                OAUTH_CLIENT_ID: $OAUTH_CLIENT_ID
+                OAUTH_CLIENT_SECRET: $OAUTH_CLIENT_SECRET
+                BITBUCKET_USER: $BITBUCKET_USER
+                BITBUCKET_PASS: $BITBUCKET_PASS
+                CI_EMAIL: $CI_EMAIL
+                CI_NAME: $CI_NAME
+                PROJECT: $PROJECT
+                REPOSITORY: $REPOSITORY
+                TEMPLATE: $TEMPLATE
+                PRIVATE: $PRIVATE
+                MAIN_BRANCHE: $PRD_BRANCHE
+                DEV_BRANCHE: $DEV_BRANCHE
