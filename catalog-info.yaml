@@ -1,0 +1,31 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: bitbucket-automation
+  title: Bitbucket Automation
+  description: >
+    Automates Bitbucket repository creation via Bitbucket Pipelines. Applies
+    predefined templates, creates dev and production branches, configures the
+    branching model, and enables pipelines — all driven by a Docker pipe.
+  annotations:
+    github.com/project-slug: rodrigobellizzieri/bitbucket-automation
+    backstage.io/source-location: url:https://github.com/rodrigobellizzieri/bitbucket-automation
+    backstage.io/techdocs-ref: dir:.
+  tags:
+    - python
+    - docker
+    - bitbucket
+    - automation
+    - devops
+    - pipeline
+  links:
+    - url: https://github.com/rodrigobellizzieri/bitbucket-automation
+      title: GitHub Repository
+      icon: github
+    - url: https://hub.docker.com/r/rodrigobellizzieri/bitbucket-automation
+      title: Docker Hub
+      icon: dashboard
+spec:
+  type: tool
+  lifecycle: production
+  owner: user:rodrigobellizzieri
