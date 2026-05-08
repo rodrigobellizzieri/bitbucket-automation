@@ -103,3 +103,5 @@ spec:
   type: external-service
   lifecycle: production
   owner: user:rodrigobellizzieri
+dependsOn:
+  - component:default/bitbucket-automation
