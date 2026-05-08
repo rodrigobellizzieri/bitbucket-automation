@@ -1,13 +1,7 @@
-site_name: Bitbucket Automation
-site_description: >
-  Ferramenta de automação que cria e configura novos repositórios Bitbucket
-  com uma única execução de pipeline.
-site_author: Rodrigo Bellizzieri
-
-docs_dir: docs
+site_name: 'Bitbucket Automation'
+nav:
+  - Home: index.md
 
 plugins:
   - techdocs-core
 
-nav:
-  - Home: index.md
