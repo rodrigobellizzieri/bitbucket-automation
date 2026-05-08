@@ -29,3 +29,55 @@ spec:
   type: tool
   lifecycle: production
   owner: user:rodrigobellizzieri
+  dependsOn:
+    - api:bitbucket-rest-api-v2
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: bitbucket-rest-api-v2
+  title: Bitbucket REST API v2.0
+  description: >
+    API REST do Bitbucket Cloud utilizada para criar repositórios, branches,
+    configurar o branching model e habilitar pipelines. A autenticação é feita
+    via OAuth2 Client Credentials (bitbucket.org/site/oauth2/access_token)
+    e as chamadas usam Bearer token no header Authorization.
+  tags:
+    - bitbucket
+    - rest
+    - oauth2
+  links:
+    - url: https://developer.atlassian.com/cloud/bitbucket/rest/intro/
+      title: Bitbucket REST API Docs
+      icon: docs
+spec:
+  type: openapi
+  lifecycle: production
+  owner: user:rodrigobellizzieri
+  definition: |
+    openapi: 3.0.0
+    info:
+      title: Bitbucket REST API v2.0
+      version: "2.0"
+    servers:
+      - url: https://api.bitbucket.org/2.0
+      - url: https://bitbucket.org/site/oauth2
+        description: OAuth2 token endpoint
+    paths:
+      /access_token:
+        post:
+          summary: Obter Bearer token via client_credentials
+          servers:
+            - url: https://bitbucket.org/site/oauth2
+      /repositories/{workspace}/{repository}:
+        post:
+          summary: Criar repositório
+      /repositories/{workspace}/{repository}/refs/branches:
+        post:
+          summary: Criar branch a partir de um hash/ref
+      /repositories/{workspace}/{repository}/branching-model/settings:
+        put:
+          summary: Configurar branching model (development e production)
+      /repositories/{workspace}/{repository}/pipelines_config:
+        put:
+          summary: Habilitar Pipelines no repositório
