@@ -9,8 +9,8 @@ metadata:
     branching model, and enables pipelines — all driven by a Docker pipe.
   annotations:
     github.com/project-slug: rodrigobellizzieri/bitbucket-automation
-    backstage.io/source-location: url:https://github.com/rodrigobellizzieri/bitbucket-automation
-    backstage.io/techdocs-ref: dir:.
+    backstage.io/source-location: url:https://github.com/rodrigobellizzieri/bitbucket-automation/tree/v1.0.0/
+    backstage.io/techdocs-ref: url:https://github.com/rodrigobellizzieri/bitbucket-automation/tree/v1.0.0/
   tags:
     - python
     - docker
