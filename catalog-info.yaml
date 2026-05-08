@@ -31,6 +31,7 @@ spec:
   owner: user:rodrigobellizzieri
   dependsOn:
     - api:bitbucket-rest-api-v2
+    - resource:bitbucket-cloud
 ---
 apiVersion: backstage.io/v1alpha1
 kind: API
@@ -81,3 +82,24 @@ spec:
       /repositories/{workspace}/{repository}/pipelines_config:
         put:
           summary: Habilitar Pipelines no repositório
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: bitbucket-cloud
+  title: Bitbucket Cloud
+  description: >
+    Plataforma Bitbucket Cloud (Atlassian) utilizada como destino de criação
+    de repositórios, branches e configuração de pipelines pela automação.
+  tags:
+    - bitbucket
+    - atlassian
+    - saas
+  links:
+    - url: https://bitbucket.org
+      title: Bitbucket Cloud
+      icon: dashboard
+spec:
+  type: external-service
+  lifecycle: production
+  owner: user:rodrigobellizzieri
